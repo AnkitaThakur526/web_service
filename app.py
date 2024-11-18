@@ -19,7 +19,7 @@ CORS(app)
 
 # Configuring the app
 app.config["MONGO_URI"] = (
-    ""  # MongoDB URI
+    "mongodb+srv://ankita:PdBdpjh8kUwDfZNL@cluster0.mqcwo.mongodb.net/elderlycare?retryWrites=true&w=majority&appName=Cluster0"  # MongoDB URI
 )
 app.config["SECRET_KEY"] = "Tatakae"  # Secret key for encoding JWT
 
@@ -158,4 +158,5 @@ def get_predictions():
 
 # Main entry point
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="127.0.0.1",port=5000,debug=True)
+    
