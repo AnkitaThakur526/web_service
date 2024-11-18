@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Condition Prediction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Health Condition Prediction</h1>
+        <form method="post" action="/">
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" class="form-control" id="age" name="age" required>
+            </div>
+            <div class="form-group">
+                <label for="sex">Sex</label>
+                <select class="form-control" id="sex" name="sex" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="cp">Chest Pain Type (cp)</label>
+                <input type="number" class="form-control" id="cp" name="cp" min="0" max="3" required>
+            </div>
+            <div class="form-group">
+                <label for="trestbps">Resting Blood Pressure (trestbps)</label>
+                <input type="number" class="form-control" id="trestbps" name="trestbps" step="0.1" required>
+            </div>
+            <div class="form-group">
+                <label for="chol">Serum Cholesterol (chol)</label>
+                <input type="number" class="form-control" id="chol" name="chol" step="0.1" required>
+            </div>
+            <div class="form-group">
+                <label for="fbs">Fasting Blood Sugar (fbs)</label>
+                <input type="number" class="form-control" id="fbs" name="fbs" min="0" max="1" required>
+            </div>
+            <div class="form-group">
+                <label for="restecg">Resting Electrocardiographic Results (restecg)</label>
+                <input type="number" class="form-control" id="restecg" name="restecg" min="0" max="2" required>
+            </div>
+            <div class="form-group">
+                <label for="thalach">Maximum Heart Rate Achieved (thalach)</label>
+                <input type="number" class="form-control" id="thalach" name="thalach" step="0.1" required>
+            </div>
+            <div class="form-group">
+                <label for="exang">Exercise Induced Angina (exang)</label>
+                <input type="number" class="form-control" id="exang" name="exang" min="0" max="1" required>
+            </div>
+            <div class="form-group">
+                <label for="oldpeak">Depression Induced by Exercise (oldpeak)</label>
+                <input type="number" class="form-control" id="oldpeak" name="oldpeak" step="0.1" required>
+            </div>
+            <div class="form-group">
+                <label for="slope">Slope of Peak Exercise ST Segment (slope)</label>
+                <input type="number" class="form-control" id="slope" name="slope" min="0" max="2" required>
+            </div>
+            <div class="form-group">
+                <label for="ca">Number of Major Vessels Colored by Fluoroscopy (ca)</label>
+                <input type="number" class="form-control" id="ca" name="ca" min="0" max="3" required>
+            </div>
+            <div class="form-group">
+                <label for="thal">Thalassemia (thal)</label>
+                <input type="number" class="form-control" id="thal" name="thal" min="0" max="3" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+        {% if prediction %}
+        <div class="chart-container">
+            <canvas id="predictionChart"></canvas>
+        </div>
+        <h2 class="text-center mt-4">Prediction: {{ prediction }}</h2>
+        <script>
+            var ctx = document.getElementById('predictionChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Healthy', 'Near Risk', 'Obese', 'Highly Risk'],
+                    datasets: [{
+                        label: 'Condition Probability',
+                        data: [{{ condition_probabilities[0] }}, {{ condition_probabilities[1] }}, {{ condition_probabilities[2] }}, {{ condition_probabilities[3] }}],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(153, 102, 255, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+        {% endif %}
+    </div>
+</body>
+</html>
